@@ -38,7 +38,7 @@ namespace MaquinaDeDoces
             ModificarCodigo = codigo;  // O this ele faz referencia para o codigo ai ele entende que um lado e variavel e o outro é parametro
             ModificarNome = nome;
             ModificarDescricao = descricao;
-            ModificarPreco = preco;
+            ModificarPreco = preco;                         // eles sao os metodos get e set
             ModificarQuantidade = quantidade;
             ModificarDataValidade = dtValidade;
             ModificarSituacao = situacao;
