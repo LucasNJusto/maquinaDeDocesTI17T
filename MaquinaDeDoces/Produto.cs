@@ -156,7 +156,7 @@ namespace MaquinaDeDoces
         
         { 
             Boolean flag = false;
-
+            
             if(ModificarCodigo == codigo)
             {
                 switch (campo)
@@ -201,6 +201,8 @@ namespace MaquinaDeDoces
             return flag;
         } //Fim do AtualizarProduto
 
+
+        // Alterar Situacao
         public Boolean AlterarSituacao(int codigo)
         {
             Boolean flag = false;
