@@ -10,39 +10,35 @@ namespace MaquinaDeDoces
     {
         // Definição das variaveis
         private int codigo;
-        private string descricao;
         private double valorTotal;
-        private int FormaDePagamento;
+        private short FormaDePagamento;
         private DateTime dataHora;
         private int codCartao;
-        private int bandeiraCartao;  // Dps colocar posibilidades para selecionar qual o  cartao que esta utilizando
+        private short bandeiraCartao;  // Dps colocar posibilidades para selecionar qual o  cartao que esta utilizando
+        private double trocoMaquina;
+        private double troco;
 
-        // Metodo Construtor
+        // Metodo Construtor       (instanciar as variaveis da memoria da maquina dar vida no caso o conteudo)
         public Pagamento()
         {
-            ModificarCodigo = 0;
-            ModificarDescricao = "";                             // isso é um construtor sem parametro pois eu dei valor as variaveis
+            ModificarCodigo = 0;   // this para informar a variavel de cima
+                            // isso é um construtor sem parametro pois eu dei valor as variaveis
             ModificarValorTotal = 0;
-            ModificarFormaDePagamento = 0;
-            ModificarDataHora = new DateTime();
-            ModificarCodCartao = 0; //0000/00/00 00:00:00
+            ModificarFormaDePagamento = 0;                      //Para consultar a variavel é so colocar ModificarCodigo;
+            ModificarDataHora = new DateTime();  //0000/00/00 00:00:00
+            ModificarCodCartao = 0;
             ModificarBandeiraCartao = 0;
+            ModificarTrocoMaquina = 100;
+            ModificarTroco = 0;
         } // Fim do Metodo Construtor
 
-        // Metodo Construtor com parametro
-        public Pagamento(int codigo, string descricao, double valorTotal, int FormaDePagamento, DateTime dataHora, int codCartao, int bandeiraCartao)
-        {
-            ModificarCodigo = codigo;
-            ModificarDescricao = descricao;                             // isso é um construtor sem parametro pois eu dei valor as variaveis
-            ModificarValorTotal = valorTotal;
-            ModificarFormaDePagamento = FormaDePagamento;
-            ModificarDataHora = dataHora;
-            ModificarCodCartao = codCartao; //0000/00/00 00:00:00
-            ModificarBandeiraCartao = bandeiraCartao;
-
-        } // Fim do Metotodo Construtor com Parametro
-
         //Metodos get e set
+        public double ModificarTroco()
+        {
+            get { return troco; };
+            set { this.troco = value};
+        }//Fim do metodo troco
+
         //Metodo de acesso e Modificação
         public int ModificarCodigo
         {
@@ -58,19 +54,6 @@ namespace MaquinaDeDoces
             } // FIm do set - Modificar o codigo
         } // FIm do ModificarCodigo
 
-        public string ModificarDescricao
-        {
-            get
-            {
-                return this.descricao;
-            } //Fim do get - retornar Descricao
-
-            set
-            {
-                this.descricao = value;
-            } // Fim do set - Modificar a Descricao
-        } // Fim do ModificarDescricao
-
         public double ModificarValorTotal
         {
             get
@@ -84,7 +67,7 @@ namespace MaquinaDeDoces
             } // Fim do set - Modificar o valor Total
         } // Fim do ModificarValorTotal
 
-        public int ModificarFormaDePagamento
+        public short ModificarFormaDePagamento
         {
             get
             {
@@ -123,7 +106,7 @@ namespace MaquinaDeDoces
             } // Fim do set - Modificar Cod Cartao
         } // Fim do ModificarCodCartao
 
-        public int ModificarBandeiraCartao
+        public short ModificarBandeiraCartao
         {
             get
             {
@@ -137,48 +120,94 @@ namespace MaquinaDeDoces
         } //Fim do ModificarBandeiraCartao
 
 
-        // Metodo Verificar Notas
-
-
-
-        // Metodo Verificar Troco
-
-
-
-        // Metodo Vaidar Cartao
-
-
-
-        // Efetuar Pagamento
-        
-
-
-        // Consultar Pagamento  
-        public string ConsultarPagamento(int codigo)
+        public double ModificarTrocoMaquina
         {
-            string msg = ""; //Criando uma variavel local 
-
-            if (ModificarCodigo == codigo)     // if quer dezer "se"
+            get { return this.trocoMaquina; }
+            set { this.trocoMaquina= value; }
+        }
+        //Modificar modelo do negodcio
+        
+        public string VerificarNotas(double entradaDinheiro, double valorProduto)
+        {
+            if(entradaDinheiro > valorProduto)
             {
-                msg = "\nCodigo: " + ModificarCodigo +
-                      "\nNome: " + ModificarDescricao +
-                      "\nDescricao: " + ModificarValorTotal +
-                      "\nPreco: " + ModificarFormaDePagamento +
-                      "\nQuantidade: " + ModificarDataHora +
-                      "\nData de Validade: " + ModificarCodCartao +
-                      "\nStuacao: " + ModificarBandeiraCartao;      
-
+            return "Ok";
             }
-            else        // serve como "se nao"
+            else
             {
-                msg = "O código digitado não exixte!";
+            return "NOK";
             }
+        }  //fim verificarNotas
+        
+        public Boolean ExisteTroco(double entradaDinheiro, double valorProduto)
+        {
+                if (entradaDinheiro > valorProduto)
+                {
+                    return true;
+                }
+                return false;
+        } //Fim existeTroco
+    
+        public void VerificarTroco(double entraDinheiro, double valorProduto)
+        {
+            Boolean respTroco = false; 
+            respTroco = ExisteTroco(entraDinheiro, valorProduto);
+            if(respTroco == true)
+            {
+                ModificarTroco = entraDinheiro - valorProduto;   // esta fazendo um operação nterna ent n precisa do return
+            }
+            else
+            {
+                ModificarTroco = 0;
+            }         
+        } //Fim verificarTroco
 
-            return msg;
+        public string EscolherFormaDePagamento()
+        {
+            return "Escolha uma das opções a baixo: " + "\n1. Dinheiro \n2. Cartão";
+        }//Fim do metodo 
 
-        } // FIm do metodo
+        public void ColetarFormaDePagamneto(short opcao)
+        {
+            ModificarFormaDePagamento = opcao;
+        }//Fim do coletar
+
+        public void EfetuarPagamentoDinheiro(double entradaPagamento, double valorProduto)
+        {
+            string resp = "";
+            resp = VerificarNotas(entradaPagamento, valorProduto);
+
+                    if (resp == "Ok")
+                    {
+                        ModificarCodigo = ModificarCodigo + 1;
+                        ModificarValorTotal = valorProduto;
+                        ModificarFormaDePagamento   = 1;
+                        ModificarDataHora = DateTime.Now; //Pegar data hora da transação
+                        ModificarTrocoMaquina += valorProduto;
+                        VerificarTroco(entradaPagamento, valorProduto);
+                        imprimir();
+                    }
+
+        } //Fim do metodo Efetuar pagamento
 
 
+        public void EfetuarPagamentoCartao(double entradaPagamento, double valorProduto, int codCartao, short bandeiraCartao)
+        {
+            ModificarCodigo++;
+            ModificarValorTotal = valorProduto;
+            ModificarFormaPagamento = 2;
+        }
 
+        //Metodo Imprimir
+        public string imprimir()
+        {
+            return "Codigo: "       + ModificarCodigo +
+                   "\n Valor Total:  " + ModificarValorTotal +
+                   "\n Troco: " + ModificarTroco +
+                   "\n Forma de Pagamento " + ModificarFormaDePagamento +
+                   "\n Data e Hora: " + ModificarDataHora;
+        }//Fim do metodo imprimir
+
+    
     } // Fim da classe
 } // Fim do Projeto

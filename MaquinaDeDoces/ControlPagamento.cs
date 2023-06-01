@@ -8,13 +8,12 @@ namespace MaquinaDeDoces
 {
     class ControlPagamento
     {
-        Pagamento pag;
+        Pagamento pagto;
         private int opcao;
-
 
         public ControlPagamento() 
         {
-            pag = new Pagamento();
+            pagto = new Pagamento();
             ModificarOpcao = -1; // ele nao começa em zero por conta do menu pois n representa nenhua das opçoes do menu
         }//Fim do Construtor
 
